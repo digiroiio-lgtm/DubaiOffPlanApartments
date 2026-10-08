@@ -33,7 +33,7 @@ export default async function AreaPage({ params }: { params: P }) {
           <ArticleBody doc={a} />
           <h2 className="h-sub">Projects in {a.shortName}</h2>
           {list.length ? <div className="project-grid two">{list.map((p) => <ProjectCard key={p.slug} p={p} />)}</div> : <p className="muted">No projects listed yet.</p>}
-          <p style={{ marginTop: 12 }}><Link className="link-dark" href={`/projects/?area=${a.slug}`}>All projects in {a.shortName}</Link></p>
+          <p style={{ marginTop: 12 }}><Link className="link-dark" href={`/projects/?area=${a.slug}`}>All projects in {a.shortName}</Link> · <Link className="link-dark" href="/payment-plan-comparison/">Monthly payment plan comparison</Link></p>
           <h2 className="h-sub">Related guides</h2>
           <ul>{guides.slice(0, 3).map((g) => <li key={g.slug}><Link href={`/guides/${g.slug}/`}>{g.title}</Link></li>)}</ul>
         </div>

@@ -31,6 +31,7 @@ export default function SiteFooter() {
             <span className="footer-sitemap-label">Explore</span>
             <Link href="/projects/">Off-plan projects</Link>
             <Link href="/guides/">Buying guides</Link>
+            <Link href="/payment-plan-comparison/">Payment plan comparison</Link>
             <Link href="/compare/">Compare projects</Link>
             <Link href="/terms/">Terms</Link>
           </nav>

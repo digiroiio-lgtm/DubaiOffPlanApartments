@@ -108,6 +108,7 @@ export default async function ProjectsPage({ searchParams }: { searchParams: SP 
         <ul>{BUDGET_CLUSTERS.map((c) => <li key={c.slug}><Link href={`/projects/budget/${c.slug}/`}>{c.label}</Link></li>)}</ul>
         <h2 className="h-sub">Browse by payment plan</h2>
         <ul>{PLAN_CLUSTERS.map((c) => <li key={c.slug}><Link href={`/projects/payment-plan/${c.slug}/`}>{c.label}</Link></li>)}</ul>
+        <p style={{ marginTop: 12 }}><Link href="/payment-plan-comparison/" className="link-dark">Monthly payment plan comparison across projects</Link></p>
       </section>
       <CompareBar />
     </div>

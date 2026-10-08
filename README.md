@@ -14,7 +14,7 @@ npm run test:e2e             # end-to-end checks against the running server (use
 
 ## Pages
 
-`/` · `/projects/` (filters: area, total budget, bedrooms, handover, payment plan) · `/projects/[slug]/` · `/projects/budget/[cluster]/` · `/projects/payment-plan/[cluster]/` · `/areas/` + 5 guides · `/guides/` + 5 guides · `/compare/` (max 3) · `/contact/` · `/privacy/` · `/terms/` · `/request-received/` (no-JS fallback) · `/admin/leads/` (basic auth, noindex).
+`/` · `/projects/` (filters: area, total budget, bedrooms, handover, payment plan) · `/projects/[slug]/` · `/projects/budget/[cluster]/` · `/projects/payment-plan/[cluster]/` · `/areas/` + 5 guides · `/guides/` + 5 guides · `/compare/` (max 3) · `/contact/` · `/privacy/` · `/terms/` · `/payment-plan-comparison/` (monthly comparison, editions, CSV, methodology) · `/request-received/` (no-JS fallback) · `/admin/leads/` (basic auth, noindex).
 
 ## Content
 
@@ -27,6 +27,8 @@ All data lives in `src/content/` (`projects.ts`, `areas.ts`, `guides.ts`).
 | Demo projects (fictional, labelled "Demo data") | 20 | only when `SHOW_DEMO_CONTENT=true` | never (noindex, not in sitemap) |
 | Area guides | 5 | yes | yes |
 | Buying guides | 5 | yes | yes |
+
+Monthly Payment Plan Comparison: 2 demo editions, 0 published. Workflow and rules in `docs/payment-plan-comparison.md`; validate with `npm run report:check -- YYYY-MM`.
 
 Budget / payment-plan clusters are generated from project data and only become indexable with ≥ 3 verified projects.
 Unknown values render as "Not published", never as 0.

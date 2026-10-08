@@ -10,7 +10,8 @@ export type AnalyticsEvent =
   | 'form_step_complete'
   | 'lead_submitted'
   | 'compare_add'
-  | 'compare_used';
+  | 'compare_used'
+  | 'report_download';
 
 type Props = Record<string, string | number | boolean | undefined>;
 
@@ -21,7 +22,7 @@ declare global {
   }
 }
 
-const ALLOWED_KEYS = new Set(['cta', 'location', 'step', 'form_location', 'projects', 'count', 'duplicate', 'page']);
+const ALLOWED_KEYS = new Set(['cta', 'location', 'step', 'form_location', 'projects', 'count', 'duplicate', 'page', 'month']);
 
 export function track(event: AnalyticsEvent, props: Props = {}) {
   if (typeof window === 'undefined') return;

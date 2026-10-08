@@ -57,3 +57,38 @@ export interface Guide {
   sources: { label: string; url: string }[];
   updated: string;
 }
+
+/* ---------- Monthly Payment Plan Comparison ---------- */
+
+/** One project's payment terms as verified in a given month. Percentages are shares of the price. */
+export interface PaymentPlanRow {
+  projectSlug: string;
+  downPaymentPct: number; // booking + down payment
+  constructionPct: number; // paid during construction
+  onHandoverPct: number;
+  postHandoverPct: number;
+  /** Length of the post-handover instalment period. null when there is no post-handover payment. */
+  postHandoverMonths: number | null;
+  /** Developer's official page, brochure or payment-plan PDF. null only in demo editions. */
+  sourceUrl: string | null;
+  sourceLabel: string | null;
+  checkedAt: string; // ISO date the source was checked
+  checkedBy: string; // initials of the person who checked it
+  notes?: string;
+}
+
+/**
+ * published - verified edition; indexable once it passes validation and the sample threshold.
+ * draft     - being prepared; never rendered publicly.
+ * demo      - fictional preview data; labelled, noindex, only with SHOW_DEMO_CONTENT=true.
+ */
+export type EditionStatus = 'published' | 'draft' | 'demo';
+
+export interface PaymentPlanEdition {
+  month: string; // YYYY-MM
+  status: EditionStatus;
+  publishedAt: string | null; // ISO date
+  methodologyVersion: string;
+  rows: PaymentPlanRow[];
+  corrections?: { date: string; text: string }[];
+}

@@ -213,6 +213,50 @@ await check('SEO band 1: home H1/title, Organization schema, footer links, canon
   assert.ok(!sm.includes('/compare/'));
 });
 
+await check('Payment plan comparison: demo edition labelled, noindex, CSV, hub, methodology, sitemap', async () => {
+  const page = await browser.newPage({ viewport: { width: 1019, height: 900 } });
+  await page.goto(`${BASE}/payment-plan-comparison/2026-10/`);
+  assert.match(await page.textContent('h1'), /Payment Plan Comparison: October 2026/);
+  assert.equal(await page.getAttribute('meta[name=robots]', 'content'), 'noindex, follow');
+  const strips = await page.locator('.demo-strip').count();
+  assert.ok(strips >= 4, `demo warning under every section (${strips})`);
+  const findings = await page.locator('.findings li').allTextContents();
+  assert.match(findings[0], /^We tracked 18 projects in October 2026; (\d+ of them offers?|none of them offer) post-handover instalments\.$/);
+  assert.ok(findings.some((f) => /3 projects changed their payment terms since September 2026; 1 now asks for a lower initial payment\./.test(f)));
+  const changes = await page.textContent('.changes');
+  assert.match(changes, /Demo Project 02 · JVC: Down payment 20% → 10%/);
+  assert.match(changes, /No longer tracked/);
+  assert.match(changes, /Newly tracked this month/);
+  assert.equal(await page.locator('script[type="application/ld+json"]').filter({ hasText: 'Dataset' }).count(), 0, 'no Dataset schema for demo data');
+  // Keep the page (and its dataLayer) instead of navigating to the CSV.
+  await page.evaluate(() => document.querySelector('a[data-report-month="2026-10"]').addEventListener('click', (e) => e.preventDefault()));
+  await page.click('a[data-report-month="2026-10"]');
+  const events = (await page.evaluate(() => window.dataLayer)).map((e) => e.event);
+  assert.ok(events.includes('report_download'));
+  await page.close();
+  const csv = await fetch(`${BASE}/payment-plan-comparison/2026-10/data.csv`);
+  assert.equal(csv.status, 200);
+  assert.match(csv.headers.get('content-type'), /^text\/csv/);
+  assert.equal(csv.headers.get('x-robots-tag'), 'noindex');
+  const body = await csv.text();
+  assert.ok(body.startsWith('month,project,project_slug,area,down_payment_pct,construction_pct,on_handover_pct,post_handover_pct,post_handover_months,source_label,source_url,checked_at,edition_status\n'));
+  assert.equal(body.trim().split('\n').length, 19);
+  const hub = await (await fetch(`${BASE}/payment-plan-comparison/`)).text();
+  assert.ok(hub.includes('href="/payment-plan-comparison/methodology/"'));
+  assert.match(hub, /<meta name="robots" content="noindex, follow"/);
+  const m = await fetch(`${BASE}/payment-plan-comparison/methodology/`);
+  assert.equal(m.status, 200);
+  const sm = await (await fetch(`${BASE}/sitemap.xml`)).text();
+  assert.ok(sm.includes('/payment-plan-comparison/methodology/'));
+  assert.ok(!sm.includes('/payment-plan-comparison/2026-'));
+  const m390 = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true });
+  for (const u of ['/payment-plan-comparison/', '/payment-plan-comparison/2026-10/', '/payment-plan-comparison/methodology/']) {
+    await m390.goto(`${BASE}${u}`);
+    assert.equal(await m390.evaluate(() => window.innerWidth), 390, `no overflow on ${u}`);
+  }
+  await m390.close();
+});
+
 await check('Mobile 390px: CTA scrolls to the form; no horizontal overflow', async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   await page.goto(BASE);

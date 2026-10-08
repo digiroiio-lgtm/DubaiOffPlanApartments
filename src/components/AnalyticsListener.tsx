@@ -9,7 +9,8 @@ export default function AnalyticsListener() {
     const onClick = (e: MouseEvent) => {
       const el = (e.target as HTMLElement | null)?.closest<HTMLElement>('[data-cta]');
       if (!el) return;
-      track('cta_click', { cta: el.dataset.cta, location: el.dataset.ctaLocation || window.location.pathname });
+      if (el.dataset.reportMonth) track('report_download', { month: el.dataset.reportMonth });
+      else track('cta_click', { cta: el.dataset.cta, location: el.dataset.ctaLocation || window.location.pathname });
       const href = el.getAttribute('href') || '';
       if (href.endsWith('#match-form')) {
         const form = document.getElementById('match-form');

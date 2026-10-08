@@ -9,7 +9,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "node --test --experimental-strip-types tests/*.test.ts",
-    "test:e2e": "node tests/e2e.mjs"
+    "test:e2e": "node tests/e2e.mjs",
+    "report:check": "node --experimental-strip-types scripts/check-payment-plans.ts"
   },
   "dependencies": {
     "next": "^15.5.27",
