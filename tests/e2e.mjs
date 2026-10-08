@@ -186,6 +186,33 @@ await check('SEO: demo projects noindex and absent from sitemap; canonical + rob
   assert.match(guide, /Last updated/); assert.match(guide, /BreadcrumbList/);
 });
 
+await check('SEO band 1: home H1/title, Organization schema, footer links, canonical rules', async () => {
+  const home = await (await fetch(`${BASE}/`)).text();
+  const h1s = [...home.matchAll(/<h1[^>]*>(.*?)<\/h1>/g)].map((m) => m[1]);
+  assert.equal(h1s.length, 1, 'exactly one H1');
+  assert.match(h1s[0], /Dubai off-plan apartments/i);
+  const title = home.match(/<title>(.*?)<\/title>/)[1].replace(/&amp;/g, '&');
+  assert.equal(title, 'Dubai Off-Plan Apartments: Compare Projects & Payment Plans');
+  assert.ok(title.length <= 60, `title ${title.length} chars`);
+  const ld = [...home.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+  const graph = ld.flatMap((x) => x['@graph'] || [x]);
+  const org = graph.find((x) => x['@type'] === 'Organization');
+  assert.ok(org && org.logo && org.url, 'Organization with logo');
+  assert.ok(graph.some((x) => x['@type'] === 'WebSite'));
+  assert.ok(!JSON.stringify(ld).includes('aggregateRating'));
+  assert.equal((await fetch(`${BASE}/logo-512.png`)).status, 200);
+  for (const href of ['/areas/jvc/', '/areas/dubai-maritime-city/', '/guides/', '/projects/', '/terms/', '/privacy/', '/contact/'])
+    assert.ok(home.includes(`href="${href}"`), `footer/site link ${href}`);
+  // Filtered list: self-canonical (normalised order) + noindex, never canonical elsewhere.
+  const f = await (await fetch(`${BASE}/projects/?budget=2000000&area=jvc`)).text();
+  assert.match(f, /<link rel="canonical" href="[^"]*\/projects\/\?area=jvc&amp;budget=2000000"/);
+  assert.match(f, /<meta name="robots" content="noindex, follow"/);
+  const c = await (await fetch(`${BASE}/compare/`)).text();
+  assert.match(c, /<meta name="robots" content="noindex, follow"/);
+  const sm = await (await fetch(`${BASE}/sitemap.xml`)).text();
+  assert.ok(!sm.includes('/compare/'));
+});
+
 await check('Mobile 390px: CTA scrolls to the form; no horizontal overflow', async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   await page.goto(BASE);

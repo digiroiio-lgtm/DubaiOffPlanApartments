@@ -11,7 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: siteUrl('/') },
     { url: siteUrl('/areas/') },
     { url: siteUrl('/guides/') },
-    { url: siteUrl('/compare/') },
     { url: siteUrl('/contact/') },
     { url: siteUrl('/privacy/') },
     { url: siteUrl('/terms/') },

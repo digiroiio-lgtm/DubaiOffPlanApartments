@@ -19,8 +19,9 @@ export async function generateMetadata({ searchParams }: { searchParams: SP }): 
   return {
     title: 'Compare Dubai Off-Plan Projects Side by Side',
     description: 'Compare up to three Dubai off-plan projects: starting price, payment schedule, expected handover and unit types.',
-    alternates: { canonical: '/compare/' },
-    robots: { index: s.length === 0, follow: true },
+    // A selection tool with no content of its own: never indexed, canonical is the page itself.
+    alternates: { canonical: s.length ? `/compare/?p=${s.join(',')}` : '/compare/' },
+    robots: { index: false, follow: true },
   };
 }
 

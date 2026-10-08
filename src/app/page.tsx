@@ -5,7 +5,12 @@ import { Arrow, Chat, Coins, Pin } from '@/components/Icons';
 import LeadForm from '@/components/LeadForm';
 import { getArea } from '@/content/areas';
 
-export const metadata: Metadata = { alternates: { canonical: '/' } };
+export const metadata: Metadata = {
+  // Absolute so the brand suffix from the layout template is not appended (keeps it under 60 characters).
+  title: { absolute: 'Dubai Off-Plan Apartments: Compare Projects & Payment Plans' },
+  description: 'Compare Dubai off-plan apartment projects, payment plans and expected handover dates. Get 3 options matched to your budget from a partner advisor.',
+  alternates: { canonical: '/' },
+};
 
 const featuredAreas = ['jvc', 'business-bay', 'dubai-south'].map((s) => getArea(s)!);
 
@@ -22,10 +27,11 @@ export default function Home() {
         <Image src="/images/hero-dubai-waterfront.webp" alt="" fill priority sizes="100vw" className="hero-img" />
         <div className="container hero-inner">
           <div className="hero-copy">
-            <p className="eyebrow eyebrow-light">Dubai off-plan apartments</p>
-            <h1>
+            {/* The H1 carries the primary query; the large slogan keeps the reference look as a paragraph. */}
+            <h1 className="eyebrow eyebrow-light">Dubai off-plan apartments</h1>
+            <p className="hero-title">
               Your next Dubai<br />apartment<br /><span className="gold">starts here.</span>
-            </h1>
+            </p>
             <p className="hero-sub">Compare projects, payment plans and handover dates. Get 3 options matched to your budget.</p>
             <div className="hero-actions">
               <a href="#match-form" className="btn btn-green btn-lg" data-cta="find_my_3_matches" data-cta-location="hero">

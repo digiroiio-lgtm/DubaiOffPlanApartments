@@ -97,7 +97,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 .hero-inner { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: flex-start; min-height: 471px; }
 .hero-copy { padding-top: 69px; max-width: 450px; }
-.hero h1 {
+.hero-title {
   margin-top: 18px; font-family: var(--font-sans); font-weight: 600; font-size: 55px; line-height: 50px; letter-spacing: -.016em;
   text-shadow: 0 1px 18px rgba(5, 18, 36, .25);
 }
@@ -235,6 +235,12 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .footer-links { display: flex; gap: 10px; font-size: 10.5px; color: #c9c6bf; }
 .footer-links a { color: var(--navy-ink); text-decoration: none; }
 .footer-links a:hover { text-decoration: underline; }
+.footer-sitemap { border-top: 1px solid #efece6; }
+.footer-sitemap-inner { padding-top: 12px; padding-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
+.footer-sitemap nav { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; font-size: 10.5px; }
+.footer-sitemap-label { width: 52px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-size: 9.5px; }
+.footer-sitemap a { color: var(--navy-ink); text-decoration: none; }
+.footer-sitemap a:hover { text-decoration: underline; }
 
 /* ===== Wide screens: keep proportions of the 1019px reference ===== */
 @media (min-width: 1200px) {
@@ -270,7 +276,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .hero::before { background: linear-gradient(180deg, rgba(11,29,52,.75) 0%, rgba(11,29,52,.45) 45%, rgba(11,29,52,.85) 100%); }
   .hero-inner { flex-direction: column; min-height: 0; }
   .hero-copy { padding-top: 40px; max-width: none; }
-  .hero h1 { font-size: 40px; line-height: 42px; }
+  .hero-title { font-size: 40px; line-height: 42px; }
   .hero-sub { font-size: 16px; }
   .hero-actions { flex-wrap: wrap; gap: 16px 22px; }
   .hero-form { width: 100%; padding: 32px 0 24px; }
@@ -324,6 +330,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .footer-inner { height: auto; padding: 24px var(--gutter); flex-direction: column; align-items: flex-start; gap: 14px; }
   .footer-links { font-size: 14px; }
   .footer-tag { font-size: 12px; }
+  .footer-sitemap-inner { padding: 16px var(--gutter) 24px; gap: 14px; }
+  .footer-sitemap nav { font-size: 14px; gap: 8px 16px; }
+  .footer-sitemap-label { width: 100%; font-size: 11px; }
 }
 
 /* ===== Inner pages ===== */

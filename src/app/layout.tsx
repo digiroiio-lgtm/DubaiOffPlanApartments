@@ -4,6 +4,7 @@ import Script from 'next/script';
 import AnalyticsListener from '@/components/AnalyticsListener';
 import SiteFooter from '@/components/SiteFooter';
 import SiteHeader from '@/components/SiteHeader';
+import { siteJsonLd } from '@/lib/schema';
 import { SITE_NAME, siteUrl } from '@/lib/site';
 import './globals.css';
 
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
   title: { default: `Dubai Off-Plan Apartments: Compare Projects & Payment Plans | ${SITE_NAME}`, template: `%s | ${SITE_NAME}` },
   description: 'Compare Dubai off-plan apartment projects, payment plans and expected handover dates, and request 3 options matched to your budget.',
   openGraph: { siteName: SITE_NAME, type: 'website', locale: 'en_AE' },
+  icons: { icon: '/logo.svg', apple: '/logo-512.png' },
 };
 
 export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: '#0F2340' };
@@ -29,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <a className="skip-link" href="#main">Skip to content</a>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd()) }} />
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />

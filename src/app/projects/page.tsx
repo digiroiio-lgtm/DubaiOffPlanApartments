@@ -15,13 +15,22 @@ function readFilters(sp: Record<string, string | string[] | undefined>): Project
   return f;
 }
 
+/** Filter URL in a fixed parameter order, so every combination has exactly one canonical form. */
+function filtersPath(f: ProjectFilters): string {
+  const q = KEYS.filter((k) => f[k]).map((k) => `${k}=${encodeURIComponent(f[k]!)}`).join('&');
+  return q ? `/projects/?${q}` : '/projects/';
+}
+
 export async function generateMetadata({ searchParams }: { searchParams: SP }): Promise<Metadata> {
-  const filtered = Object.keys(readFilters(await searchParams)).length > 0;
+  const f = readFilters(await searchParams);
+  const filtered = Object.keys(f).length > 0;
   return {
     title: 'Dubai Off-Plan Projects: Filter by Area, Budget & Handover',
     description: 'Filter Dubai off-plan apartment projects by area, total budget, bedrooms, expected handover and payment plan.',
-    alternates: { canonical: '/projects/' },
-    // Filter combinations are not indexed; the unfiltered list is. With no verified projects yet, the list itself is noindex too.
+    // Self-referencing canonical. A filtered page is noindex, so its canonical must not point at a
+    // different URL (canonical elsewhere + noindex sends conflicting signals).
+    alternates: { canonical: filtersPath(f) },
+    // The unfiltered list is indexed once verified projects exist; filter combinations never are.
     robots: { index: !filtered && publicProjects().some((p) => p.status === 'verified'), follow: true },
   };
 }
